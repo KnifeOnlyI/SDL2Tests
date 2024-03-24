@@ -15,16 +15,38 @@ file(
 
 file(
     GLOB_RECURSE
+    THIRD_SOURCES
+    ${CMAKE_CURRENT_LIST_DIR}/third/**/*.c
+    ${CMAKE_CURRENT_LIST_DIR}/third/**/*.cpp
+)
+
+file(
+    GLOB_RECURSE
     HEADERS
     ${CMAKE_CURRENT_LIST_DIR}/core/header/*.h
     ${CMAKE_CURRENT_LIST_DIR}/core/header/*.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/header/*.inl
 )
 
+file(
+    GLOB_RECURSE
+    THIRD_HEADERS
+    ${CMAKE_CURRENT_LIST_DIR}/third/**/*.h
+    ${CMAKE_CURRENT_LIST_DIR}/third/**/*.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/third/**/*.inl
+)
+
 include_directories(${CMAKE_CURRENT_LIST_DIR}/core/header)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/third/imgui/header)
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(
+    ${PROJECT_NAME}
+    ${SOURCES}
+    ${THIRD_SOURCES}
+    ${THIRD_HEADERS}
+)
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} SDL2_image::SDL2_image)
